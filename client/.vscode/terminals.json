@@ -1,0 +1,11 @@
+{
+  "autorun": true,
+  "autokill": true,
+  "terminals": [
+    {
+        "name": "client",
+        "focus": true,
+        "command": " "
+    }
+  ]
+}

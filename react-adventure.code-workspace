@@ -1,0 +1,52 @@
+{
+	"folders": [
+		{
+			"path": "client"
+		},
+		{
+			"path": "api"
+		}
+	],
+	"settings": {
+		"editor.minimap.enabled": false,
+		"editor.wordWrap": "off",
+		// Turns on auto format on save for all files types.
+		// This is also required to allow Prettier to auto format files on save.
+		"editor.formatOnSave": true,
+		"[html]": {
+		  "editor.formatOnSave": false
+		},
+		// Turns it off for JavaScript since we use Prettier to auto format on save.
+		"javascript.format.enable": false,
+		"javascript.validate.enable": false,
+		"json.format.enable": false,
+		"css.validate": false,
+		"less.validate": false,
+		"scss.validate": false,
+		"html.suggest.angular1": false,
+		"html.suggest.ionic": false,
+		"html.validate.scripts": false,
+		"html.validate.styles": false,
+		// Required to allow auto format on save with Prettier + ESLint + Vetur.
+		"eslint.autoFixOnSave": true,
+		"eslint.alwaysShowStatus": true,
+		// "eslint.validate": [
+		//     "javascript",
+		//     {
+		//         "language": "vue",
+		//         // Required to allow auto format on save with Prettier + ESLint + Vetur.
+		//         "autoFix": true
+		//     }
+		// ],
+		// Required to allow auto format on save with Prettier + ESLint + Vetur.
+		"prettier.eslintIntegration": true,
+		"prettier.stylelintIntegration": true,
+		// "vetur.validation.template": false,
+		"search.exclude": {
+		  "**/node_modules*": true,
+		  "dist": true
+		},
+        "javascript.implicitProjectConfig.checkJs": true,
+        "terminals.sortTerminals": true
+	  }
+}
