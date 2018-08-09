@@ -1,12 +1,15 @@
 // TODO: I think I should provide some kind of handler wrapper.
 
-import { PRODUCT_LISTING_ACTIONS } from "./actions";
-import { apiRequest } from "";
+import { GET_PRODUCTS, SET_PRODUCTS } from "./actions";
 
-export const getProductsHandler = async dispatch => async next => async action => {
+import { get } from "@http/api";
+
+const getProductsHandler = async dispatch => async next => async ({ type, payload } = action) => {
     next(action);
 
-    if (action.type === PRODUCT_LISTING_ACTIONS.getProducts) {
-        dispatch(apiRequest);
+    if (type === GET_PRODUCTS) {
+        dispatch(get({ url: "/products", onSuccess: SET_PRODUCTS }));
     }
 };
+
+export const listingHandlers = [getProductsHandler];

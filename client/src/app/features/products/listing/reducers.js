@@ -1,20 +1,32 @@
-import { PRODUCT_LISTING_ACTIONS } from "@actions";
+import { SET_PRODUCTS } from "./actions";
 
+// TODO: Pas certains que ça fonctionne ça avec plusieurs fichiers de reducers?
 const INITIAL_STATE = {
     products: []
 };
 
+// TODO: Pas certains que ça fonctionne ça avec plusieurs fichiers de reducers?
+// Doit probablement
+// return {
+//    ...state,
+//    products: payload
+// }
 function setProducts(state, payload) {
     return {
-        products: payload.products
+        ...state,
+        products: payload
     };
 }
 
-export function productListingReducer(state = INITIAL_STATE, { type, payload }) {
+function reducer(state = INITIAL_STATE, { type, payload }) {
     switch (type) {
-        case PRODUCT_LISTING_ACTIONS.setProducts:
+        case SET_PRODUCTS:
             return setProducts(state, payload);
         default:
             return state;
     }
 }
+
+export const listingReducer = {
+    listing: reducer
+};

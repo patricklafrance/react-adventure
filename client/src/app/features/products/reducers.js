@@ -1,5 +1,8 @@
-import { productListingReducer } from "./listing/reducers";
+import { listingReducer } from "./listing/reducers";
 
+// TODO: Might need to combineReducers here.
 export const productsReducer = {
-    listing: productListingReducer
+    products: {
+        ...listingReducer
+    }
 };

@@ -1,20 +1,18 @@
-const NAMESPACE = "[product listing]";
+const NAMESPACE = "[products.listing]";
 
-export const PRODUCT_LISTING_ACTIONS = {
-    getProducts: `${NAMESPACE} Get Products`,
-    setProducts: `${NAMESPACE} Set Products`
-};
+export const GET_PRODUCTS = `${NAMESPACE} Get Products`;
+export const SET_PRODUCTS = `${NAMESPACE} Set Products`;
 
 export function getProducts() {
     return {
-        type: PRODUCT_LISTING_ACTIONS.getProducts,
+        type: GET_PRODUCTS,
         payload: {}
     };
 }
 
 export function setProducts(products) {
     return {
-        type: PRODUCT_LISTING_ACTIONS.setProducts,
+        type: SET_PRODUCTS,
         payload: {
             products: products
         }

@@ -4,7 +4,9 @@ const data = require("./data.js");
 const router = express.Router();
 
 router.get("/products", (_, res) => {
-    res.json(data.products);
+    res.json({
+        data: data.products
+    });
 });
 
 router.post("/products/upvote", (req, res) => {

@@ -1,8 +1,6 @@
 import { combineReducers } from "redux";
-import { counterReducer } from "@features/counter";
-import { productsReducer } from "@features/products";
+import { featuresReducer } from "@features/reducers";
 
 export const rootReducer = combineReducers({
-    ...counterReducer,
-    ...productsReducer
+    ...featuresReducer
 });

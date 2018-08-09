@@ -1,14 +1,8 @@
 import { ensure } from "@utils/contracts";
 
-const NAMESPACE = "[api]";
+const NAMESPACE = "[http.api]";
 
-export const API_ACTIONS = {
-    request: `${NAMESPACE} Request`,
-    unmanagedError: `${NAMESPACE} Unmanaged Error`
-    // success: `${NAMESPACE} Success`,
-    // error: `${NAMESPACE} Error`,
-    // completed: `${NAMESPACE} Completed`
-};
+export const API_REQUEST = `${NAMESPACE} Request`;
 
 export const HTTP_METHODS = {
     get: "GET"
@@ -16,7 +10,7 @@ export const HTTP_METHODS = {
 
 function apiRequest(method, url, params, onSuccess, onError) {
     return {
-        type: API_ACTIONS.request,
+        type: API_REQUEST,
         payload: {
             method,
             url,
@@ -28,12 +22,10 @@ function apiRequest(method, url, params, onSuccess, onError) {
 }
 
 // TODO: Add documentation header
-export function get(instructions = {}) {
-    const { url, params, onSuccess, onError } = instructions;
-
+export function get({ url, params, onSuccess, onError }) {
     ensure(method, "method", "api.actions.get").isNotNullOrEmpty();
     ensure(url, "url", "api.actions.get").isNotNullOrEmpty();
     ensure(onSuccess, "onSuccess", "api.actions.get").isNotNullOrEmpty();
 
-    return apiRequest("GET", url, params, onSuccess, onError);
+    return apiRequest(HTTP_METHODS.get, url, params, onSuccess, onError);
 }

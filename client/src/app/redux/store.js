@@ -1,18 +1,18 @@
 import { applyMiddleware, createStore as createReduxStore } from "redux";
 import { connectRouter, routerMiddleware } from "connected-react-router";
 
+import { appMiddlewares } from "./middlewares";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { rootReducer } from "@app/root-reducer";
+import { ensure } from "@utils/contracts";
+import { rootReducer } from "./root-reducer";
 
 export function createStore(history) {
-  const enhancers = composeWithDevTools(
-    applyMiddleware(routerMiddleware(history))
-  );
+    ensure(history, "history", "store.createStore").isNotNull();
 
-  const store = createReduxStore(
-    connectRouter(history)(rootReducer),
-    enhancers
-  );
+    const middlewares = [routerMiddleware(history), ...appMiddlewares];
 
-  return store;
+    const enhancers = composeWithDevTools(applyMiddleware(...middlewares));
+    const store = createReduxStore(connectRouter(history)(rootReducer), enhancers);
+
+    return store;
 }
