@@ -6,13 +6,15 @@ import { InvalidOperationError } from "@utils/errors";
 import { get } from "@http";
 import { isNotNullOrEmpty } from "@utils/types";
 
-const requestMiddleware = async dispatch => async next => async ({ type, payload } = action) => {
+const requestMiddleware = dispatch => next => async action => {
+    const { type, payload } = action;
+
     if (type === API_REQUEST) {
         const { method, url, params, onSuccess, onError } = payload;
 
         switch (method) {
             case HTTP_METHODS.get:
-                handleRequest(() => get({ url, params }), onSuccess, onError);
+                await handleRequest(async () => await get({ url, params }), onSuccess, onError, dispatch);
                 break;
             default:
                 throw new InvalidOperationError(`API request middleware doesn't support the HTTP method "${method}"`);
@@ -22,7 +24,9 @@ const requestMiddleware = async dispatch => async next => async ({ type, payload
     return next(action);
 };
 
-const unhandledErrorLoggerMiddleware = async dispatch => async next => async ({ type, payload } = action) => {
+const unhandledErrorLoggerMiddleware = dispatch => next => action => {
+    const { type, payload } = action;
+
     if (type === API_UNHANDLED_ERROR) {
         if (IS_DEBUG) {
             console.log(payload);
@@ -32,9 +36,9 @@ const unhandledErrorLoggerMiddleware = async dispatch => async next => async ({ 
     return next(action);
 };
 
-async function handleRequest(request, onSuccess, onError) {
+async function handleRequest(request, onSuccess, onError, dispatch) {
     try {
-        const response = await request();
+        const response = request();
         dispatch({ type: onSuccess, payload: response.data });
     } catch (error) {
         // TODO: Logic should be:

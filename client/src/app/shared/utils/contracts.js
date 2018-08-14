@@ -1,10 +1,13 @@
-import { isNull, isNullOrEmpty } from "@utils/types";
+import { ArgumentError, ArgumentNullError } from "@utils/errors";
 
-import { ArgumentNullError } from "@utils/errors";
 import _ from "lodash";
+import { isNullOrEmpty } from "@utils/types";
 import { template } from "@utils/strings";
 
 const ASSERTION_DEFINITIONS = {
+    // usage:
+    //      ensure(parameter, "Optional parameter name", "Optional context")
+    //          .isNotNull("Optional specific message");
     isNotNull: (parameter, parameterName, context, assertionMessage) => {
         if (_.isNil(parameter)) {
             const message = getMessage(assertionMessage, template`${0}${1} cannot be null.`, parameterName, context);
@@ -14,6 +17,9 @@ const ASSERTION_DEFINITIONS = {
         return this;
     },
 
+    // usage:
+    //      ensure(parameter, "Optional parameter name", "Optional context")
+    //          .isNotEmpty("Optional specific message");
     isNotEmpty: (parameter, parameterName, context, assertionMessage) => {
         let isValid = false;
 
@@ -33,6 +39,9 @@ const ASSERTION_DEFINITIONS = {
         return this;
     },
 
+    // usage:
+    //      ensure(parameter, "Optional parameter name", "Optional context")
+    //          .isNotNullOrEmpty("Optional specific message");
     isNotNullOrEmpty: (parameter, parameterName, context, assertionMessage) => {
         let message = "";
 
@@ -49,6 +58,9 @@ const ASSERTION_DEFINITIONS = {
         return this;
     },
 
+    // usage:
+    //      ensure(parameter, "Optional parameter name", "Optional context")
+    //          .isFunction("Optional specific message");
     isFunction: (parameter, parameterName, context, assertionMessage) => {
         if (!_.isNil(parameter) && !_.isFunction(parameter)) {
             const message = getMessage(assertionMessage, template`${0}${1} must be a function.`, parameterName, context);
@@ -58,6 +70,9 @@ const ASSERTION_DEFINITIONS = {
         return this;
     },
 
+    // usage:
+    //      ensure(parameter, "Optional parameter name", "Optional context")
+    //          .isString("Optional specific message");
     isString: (parameter, parameterName, context, assertionMessage) => {
         if (!_.isNil(parameter) && !_.isString(parameter)) {
             const message = getMessage(assertionMessage, template`${0}${1} must be a string.`, parameterName, context);
@@ -67,6 +82,9 @@ const ASSERTION_DEFINITIONS = {
         return this;
     },
 
+    // usage:
+    //      ensure(parameter, "Optional parameter name", "Optional context")
+    //          .isArray("Optional specific message");
     isArray: (parameter, parameterName, context, assertionMessage) => {
         if (!_.isNil(parameter) && !_.isArray(parameter)) {
             const message = getMessage(assertionMessage, template`${0}${1} must be an array.`, parameterName, context);
@@ -76,6 +94,9 @@ const ASSERTION_DEFINITIONS = {
         return this;
     },
 
+    // usage:
+    //      ensure(parameter, "Optional parameter name", "Optional context")
+    //          .isObject("Optional specific message");
     isObject: (parameter, parameterName, context, assertionMessage) => {
         if (!_.isNil(parameter) && !_.isObject(parameter)) {
             const message = getMessage(assertionMessage, template`${0}${1} must be an object.`, parameterName, context);
@@ -85,6 +106,9 @@ const ASSERTION_DEFINITIONS = {
         return this;
     },
 
+    // usage:
+    //      ensure(parameter, "Optional parameter name", "Optional context")
+    //          .isNumber("Optional specific message");
     isNumber: (parameter, parameterName, context, assertionMessage) => {
         if (!_.isNil(parameter) && !_.isInteger(parameter)) {
             const message = getMessage(assertionMessage, template`${0}${1} must be a number.`, parameterName, context);
@@ -94,6 +118,9 @@ const ASSERTION_DEFINITIONS = {
         return this;
     },
 
+    // usage:
+    //      ensure(parameter, "Optional parameter name", "Optional context", () => { return true; // Optional evaluator function that returns a bool })
+    //          .isTrue("Optional specific message");
     isTrue: (parameter, parameterName, context, evaluator, assertionMessage) => {
         let fct = evaluator;
 
@@ -141,7 +168,8 @@ function getMessage(assertionMessage, defaultMessageTemplate, parameterName, con
 // usage:
 //      ensure(parameter, "Optional parameter name", "Optional context")
 //          .isNotNull("Optional specific message")
-//          .isNotEmpty();
+//          .isNotEmpty("Optional specific message")
+//          .isString("Optional specific message");
 export function ensure(parameter, parameterName, context) {
     const assertions = {};
 

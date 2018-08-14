@@ -1,6 +1,6 @@
 const NAMESPACE = "[products.events]";
 
-export const PRODUCTS_COUNT_UPDATED = `[products.events] Products Count Updated`;
+export const PRODUCTS_COUNT_UPDATED = `${NAMESPACE} Products Count Updated`;
 
 export function productsCountUpdated(newCount) {
     return {

@@ -1,3 +1,5 @@
+import { ensure } from "@utils/contracts";
+
 const NAMESPACE = "[products.listing]";
 
 export const GET_PRODUCTS = `${NAMESPACE} Get Products`;
@@ -11,6 +13,8 @@ export function getProducts() {
 }
 
 export function setProducts(products) {
+    ensure(products, "products", "product.listing.setProducts").isNotNull();
+
     return {
         type: SET_PRODUCTS,
         payload: {

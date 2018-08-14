@@ -1,4 +1,3 @@
-import { ArgumentError } from "@utils/errors";
 import { HttpError } from "./http-errors";
 import { IS_DEBUG } from "@utils/env";
 import _ from "lodash";

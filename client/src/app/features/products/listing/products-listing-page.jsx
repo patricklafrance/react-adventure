@@ -4,11 +4,11 @@ import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import { getProducts } from "./actions";
 
-class Component extends PureComponent {
+export class ProductsListingComponent extends PureComponent {
     componentWillMount() {
         const { getProducts } = this.props.actions;
 
-        getProducts();
+        // getProducts();
     }
 
     render() {
@@ -17,7 +17,11 @@ class Component extends PureComponent {
         return (
             <React.Fragment>
                 <h1>Product listing</h1>
-                <ul>{products.map((product, i) => <li key={i}>{product.name}</li>)}</ul>
+                <ul>
+                    {products.map((product, i) => (
+                        <li key={i}>{product.name}</li>
+                    ))}
+                </ul>
             </React.Fragment>
         );
     }
@@ -41,7 +45,7 @@ const mapDispatchToProps = dispatch => ({
     )
 });
 
-export const ProductListing = connect(
+export const ProductsListing = connect(
     mapStateToProps,
     mapDispatchToProps
-)(Component);
+)(ProductsListingComponent);

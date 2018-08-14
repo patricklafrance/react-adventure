@@ -1,3 +1,3 @@
-import { productsHandlers } from "./products/handlers";
+import { productsHandlers } from "./products";
 
 export const featuresHandlers = [...productsHandlers];

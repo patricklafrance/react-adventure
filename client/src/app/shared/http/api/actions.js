@@ -23,7 +23,6 @@ function apiRequest(method, url, params, onSuccess, onError) {
 
 // TODO: Add documentation header
 export function get({ url, params, onSuccess, onError }) {
-    ensure(method, "method", "api.actions.get").isNotNullOrEmpty();
     ensure(url, "url", "api.actions.get").isNotNullOrEmpty();
     ensure(onSuccess, "onSuccess", "api.actions.get").isNotNullOrEmpty();
 
