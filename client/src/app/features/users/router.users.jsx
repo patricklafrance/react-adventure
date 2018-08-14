@@ -1,10 +1,16 @@
+import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 
-import React from "react";
 import { UsersListing } from "./listing/page.users-listing";
 
-export const UsersRouter = () => (
-    <Switch>
-        <Route path="/users" component={UsersListing} exact />
-    </Switch>
-);
+export class UsersRouter extends Component {
+    render() {
+        const { match } = this.props;
+
+        return (
+            <Switch>
+                <Route path={match.path} component={UsersListing} exact />
+            </Switch>
+        );
+    }
+}

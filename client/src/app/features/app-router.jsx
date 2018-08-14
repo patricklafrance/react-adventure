@@ -1,5 +1,3 @@
-// import { ErrorsRouter } from "@features/errors";
-
 import { Redirect, Route } from "react-router-dom";
 
 import { NotFound } from "@features/errors/not-found-page";
