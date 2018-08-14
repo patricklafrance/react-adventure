@@ -6,7 +6,7 @@ import { InvalidOperationError } from "@utils/errors";
 import { get } from "@http";
 import { isNotNullOrEmpty } from "@utils/types";
 
-const requestMiddleware = dispatch => next => async action => {
+const requestMiddleware = ({ dispatch }) => next => async action => {
     const { type, payload } = action;
 
     if (type === API_REQUEST) {
@@ -14,7 +14,7 @@ const requestMiddleware = dispatch => next => async action => {
 
         switch (method) {
             case HTTP_METHODS.get:
-                await handleRequest(async () => await get({ url, params }), onSuccess, onError, dispatch);
+                await handleRequest(async () => get({ url: toAbsoluteApiUrl(url), params }), onSuccess, onError, dispatch);
                 break;
             default:
                 throw new InvalidOperationError(`API request middleware doesn't support the HTTP method "${method}"`);
@@ -24,12 +24,12 @@ const requestMiddleware = dispatch => next => async action => {
     return next(action);
 };
 
-const unhandledErrorLoggerMiddleware = dispatch => next => action => {
+const unhandledErrorLoggerMiddleware = ({ dispatch }) => next => action => {
     const { type, payload } = action;
 
     if (type === API_UNHANDLED_ERROR) {
         if (IS_DEBUG) {
-            console.log(payload);
+            console.error(payload);
         }
     }
 
@@ -38,7 +38,7 @@ const unhandledErrorLoggerMiddleware = dispatch => next => action => {
 
 async function handleRequest(request, onSuccess, onError, dispatch) {
     try {
-        const response = request();
+        const response = await request();
         dispatch({ type: onSuccess, payload: response.data });
     } catch (error) {
         // TODO: Logic should be:
@@ -54,6 +54,10 @@ async function handleRequest(request, onSuccess, onError, dispatch) {
             dispatch({ type: API_UNHANDLED_ERROR, payload: error });
         }
     }
+}
+
+function toAbsoluteApiUrl(relativeUrl) {
+    return `http://localhost:5000${relativeUrl}`;
 }
 
 export const apiRequestMiddlewares = [requestMiddleware, unhandledErrorLoggerMiddleware];

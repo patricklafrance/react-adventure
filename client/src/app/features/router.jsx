@@ -7,7 +7,7 @@ import { Switch } from "react-router-dom";
 import { UnmanagedError } from "@features/errors/unmanaged-error-page";
 import { UsersRouter } from "@features/users";
 
-export const AppRouter = () => (
+export const Router = () => (
     <Switch>
         <Redirect from="/" to="/products" exact />
         <Route path="/products" component={ProductsRouter} />

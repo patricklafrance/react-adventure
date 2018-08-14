@@ -8,20 +8,28 @@ export class ProductsListingComponent extends PureComponent {
     componentWillMount() {
         const { getProducts } = this.props.actions;
 
-        // getProducts();
+        getProducts();
     }
 
     render() {
         const { products } = this.props;
 
-        return (
-            <React.Fragment>
-                <h1>Product listing</h1>
+        const productList =
+            products.length === 0 ? (
+                <div>No products available</div>
+            ) : (
                 <ul>
                     {products.map((product, i) => (
                         <li key={i}>{product.name}</li>
                     ))}
                 </ul>
+            );
+
+        return (
+            <React.Fragment>
+                <h1>Product listing</h1>
+
+                {productList}
             </React.Fragment>
         );
     }

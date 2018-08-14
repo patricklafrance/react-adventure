@@ -1,5 +1,5 @@
-import { HttpError } from "./http-errors";
-import { IS_DEBUG } from "@utils/env";
+import { RequestError, UnauthorizedError, UnsupportedContentTypeError } from "./http-errors";
+
 import _ from "lodash";
 import { ensure } from "@utils/contracts";
 
@@ -17,18 +17,8 @@ function _createRequestOptions({ method, body }) {
     };
 }
 
-function _throwResponseError({ status, statusText, body, url }) {
-    // 4xx and 5xx errors
-    throw new HttpError(statusText, {
-        status,
-        statusText,
-        body,
-        url
-    });
-}
-
 export async function get({ url, params }) {
-    ensure.isNullOrEmpty(url, "url", "fetch-client.get").isNullOrEmpty();
+    ensure(url, "url", "http.fetch-client.get").isNotNullOrEmpty();
 
     let requestUrl = url;
 
@@ -40,34 +30,43 @@ export async function get({ url, params }) {
         method: "GET"
     });
 
-    return _execute(requestUrl, options);
+    return _execute({
+        url: requestUrl,
+        options
+    });
 }
 
 export async function post({ url, params }) {
-    ensure.isNullOrEmpty(url, "url", "fetch-client.post").isNullOrEmpty();
+    ensure(url, "url", "http.fetch-client.post").isNotNullOrEmpty();
 
     const options = _createRequestOptions({
         method: "POST",
         body: params
     });
 
-    return _execute(url, options);
+    return _execute({
+        url,
+        options
+    });
 }
 
-async function _execute(url, options) {
-    if (IS_DEBUG) {
-        console.log(`Sending at: ${url}`);
-    }
-
+async function _execute(request) {
+    const { url, options } = request;
     const response = await fetch(url, options);
 
     if (response.ok) {
-        if (IS_DEBUG) {
-            console.log(`Received response for: ${url}`);
+        if (response.headers.get("content-type").includes("application/json")) {
+            try {
+                return response.json();
+            } catch (error) {
+                throw new RequestError(request, response, error);
+            }
+        } else {
+            throw new UnsupportedContentTypeError(request, response);
         }
-
-        return response.json();
+    } else if (response.status === 401) {
+        throw new UnauthorizedError(request, response);
     }
 
-    _throwResponseError(response);
+    throw new RequestError(request, response);
 }

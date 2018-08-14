@@ -4,7 +4,7 @@ import { GET_PRODUCTS, SET_PRODUCTS } from "./actions";
 
 import { get } from "@http/api";
 
-const getProductsHandler = dispatch => next => action => {
+const getProductsHandler = ({ dispatch }) => next => action => {
     var result = next(action);
 
     const { type } = action;
