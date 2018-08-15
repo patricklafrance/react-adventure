@@ -13,6 +13,9 @@ const Sidebar = () => (
             <li>
                 <NavLink to="/users">Users</NavLink>
             </li>
+            <li>
+                <NavLink to="/tests">Tests</NavLink>
+            </li>
         </ul>
     </div>
 );

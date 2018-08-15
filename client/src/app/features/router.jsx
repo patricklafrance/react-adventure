@@ -4,6 +4,7 @@ import { NotFound } from "@features/errors/not-found-page";
 import { ProductsRouter } from "@features/products";
 import React from "react";
 import { Switch } from "react-router-dom";
+import { TestsRouter } from "@features/tests";
 import { UnmanagedError } from "@features/errors/unmanaged-error-page";
 import { UsersRouter } from "@features/users";
 
@@ -12,6 +13,7 @@ export const Router = () => (
         <Redirect from="/" to="/products" exact />
         <Route path="/products" component={ProductsRouter} />
         <Route path="/users" component={UsersRouter} />
+        <Route path="/tests" component={TestsRouter} />
         <Route path="/error" component={UnmanagedError} />
         <Route component={NotFound} />
     </Switch>

@@ -14,7 +14,7 @@ const requestMiddleware = ({ dispatch }) => next => async action => {
 
         switch (method) {
             case HTTP_METHODS.get:
-                await handleRequest(async () => get({ url: toAbsoluteApiUrl(url), params }), onSuccess, onError, dispatch);
+                await handleRequest(() => get({ url: toAbsoluteApiUrl(url), params }), onSuccess, onError, dispatch);
                 break;
             default:
                 throw new InvalidOperationError(`API request middleware doesn't support the HTTP method "${method}"`);

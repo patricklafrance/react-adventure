@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
-const routers = [require("./products")];
+const routers = [require("./products"), require("./errors")];
 
 const PORT = 5000;
 
@@ -14,18 +14,16 @@ app.use(bodyParser.json());
 
 // Error handling middleware.
 app.use((err, req, res, _) => {
-    console.error(err.stack);
-
-    res.sendStatus(500);
+  res.sendStatus(500);
 });
 
 app.use(routers);
 
 const server = app.listen(PORT, function() {
-    const host = server.address().address;
-    const port = server.address().port;
+  const host = server.address().address;
+  const port = server.address().port;
 
-    console.log(server.address());
+  console.log(server.address());
 
-    console.log("Listening at http://%s:%s", host, port);
+  console.log("Listening at http://%s:%s", host, port);
 });

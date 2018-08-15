@@ -8,7 +8,7 @@ export const HTTP_METHODS = {
     get: "GET"
 };
 
-function apiRequest(method, url, params, onSuccess, onError) {
+function _apiRequest(method, url, params, onSuccess, onError) {
     return {
         type: API_REQUEST,
         payload: {
@@ -26,5 +26,5 @@ export function get({ url, params, onSuccess, onError }) {
     ensure(url, "url", "api.actions.get").isNotNullOrEmpty();
     ensure(onSuccess, "onSuccess", "api.actions.get").isNotNullOrEmpty();
 
-    return apiRequest(HTTP_METHODS.get, url, params, onSuccess, onError);
+    return _apiRequest(HTTP_METHODS.get, url, params, onSuccess, onError);
 }
