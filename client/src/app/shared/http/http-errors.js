@@ -8,9 +8,9 @@ export class HttpError extends Error {
     }
 }
 
-export class RequestError extends HttpError {
+export class HttpRequestError extends HttpError {
     constructor(request, response, innerError) {
-        let message = `\nAn HTTP error occured:\nRequest: ${JSON.stringify(request)}\nResponse: ${JSON.stringify(response)}`;
+        let message = `\nAn error occurred while sending the request:\nRequest: ${JSON.stringify(request)}\nResponse: ${JSON.stringify(response)}`;
 
         if (!_.isNil(innerError)) {
             message += `Error: ${innerError.toString()}`;

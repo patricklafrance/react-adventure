@@ -1,4 +1,4 @@
-import { RequestError, UnauthorizedError, UnsupportedContentTypeError } from "./http-errors";
+import { HttpRequestError, UnauthorizedError, UnsupportedContentTypeError } from "./http-errors";
 
 import _ from "lodash";
 import { ensure } from "@utils/contracts";
@@ -59,7 +59,7 @@ async function execute(request) {
             try {
                 return await response.json();
             } catch (error) {
-                throw new RequestError(request, await buildResponseForError(response), error);
+                throw new HttpRequestError(request, await buildResponseForError(response), error);
             }
         } else {
             throw new UnsupportedContentTypeError(request, await buildResponseForError(response));
@@ -68,7 +68,7 @@ async function execute(request) {
         throw new UnauthorizedError(request, await buildResponseForError(response));
     }
 
-    throw new RequestError(request, await buildResponseForError(response));
+    throw new HttpRequestError(request, await buildResponseForError(response));
 }
 
 async function buildResponseForError(response) {
