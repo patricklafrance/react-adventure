@@ -2,23 +2,31 @@ import { ensure } from "@utils/contracts";
 
 const NAMESPACE = "[http.events]";
 
-export const API_UNMANAGED_ERROR = `${NAMESPACE} API Unmanaged Error`;
-export const API_UNHANDLED_ERROR = `${NAMESPACE} API Unhandled Error`;
+export const API_UNMANAGED_ERROR = `${NAMESPACE} Api Unmanaged Error`;
+export const API_UNHANDLED_ERROR = `${NAMESPACE} Api Unhandled Error`;
+export const API_UNAUTHORIZED_ERROR = `${NAMESPACE} Api Unauthorized Error`;
 
-export function apiUnmanagedError(payload) {
-    ensure(payload, "payload", "http.events.apiUnmanagedError").isNotNull();
+export function apiUnmanagedError(error) {
+    ensure(error, "error", "http.events.apiUnhandledError").isNotNull();
 
     return {
         type: API_UNMANAGED_ERROR,
-        payload: payload
+        payload: error
     };
 }
 
-export function apiUnhandledError(payload) {
-    ensure(payload, "payload", "http.events.apiUnhandledError").isNotNull();
+export function apiUnhandledError(error) {
+    ensure(error, "error", "http.events.apiUnhandledError").isNotNull();
 
     return {
         type: API_UNHANDLED_ERROR,
-        payload: payload
+        payload: error
+    };
+}
+
+export function apiUnauthorizedError() {
+    return {
+        type: API_UNAUTHORIZED_ERROR,
+        payload: {}
     };
 }

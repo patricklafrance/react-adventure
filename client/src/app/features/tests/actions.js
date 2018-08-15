@@ -1,5 +1,7 @@
-export const TRIGGER_BAD_REQUEST = "Trigger Bad Request";
-export const TRIGGER_UNMANAGED_ERROR = "Trigger Unmanaged Error";
+const NAMESPACE = "[test]";
+
+export const TRIGGER_BAD_REQUEST = `${NAMESPACE} Trigger Bad Request`;
+export const TRIGGER_UNMANAGED_ERROR = `${NAMESPACE} Trigger Unmanaged Error`;
 
 export function triggerBadRequest() {
     return {

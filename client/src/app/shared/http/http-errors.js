@@ -1,36 +1,73 @@
-import _ from "lodash";
+export const REQUEST_ERROR = "Request Error";
+export const NETWORK_ERROR = "Network Error";
+export const BAD_REQUEST_ERROR = "Bad Request";
+export const UNAUTHORIZED_ERROR = "Unauthorized";
+export const UNSUPPORTED_CONTENT_TYPE_ERROR = "Unsupported Content Type";
+export const MALFORMED_JSON_ERROR = "Malformed JSON";
 
-export class HttpError extends Error {
-    constructor(message, request, response) {
-        super(message, request, response);
-        this.request = request;
-        this.response = response;
-    }
+function toErrorResponse(response, contentAccessor) {
+    const { url, status, statusText } = response;
+
+    return {
+        url,
+        status,
+        statusText,
+        // This is quite complex because a fetch response stream
+        // cannot be read twice.
+        content: contentAccessor || (() => response.text())
+    };
 }
 
-export class HttpRequestError extends HttpError {
-    constructor(request, response, innerError) {
-        let message = `\nAn error occurred while sending the request:\nRequest: ${JSON.stringify(request)}\nResponse: ${JSON.stringify(response)}`;
-
-        if (!_.isNil(innerError)) {
-            message += `Error: ${innerError.toString()}`;
-        }
-
-        super(message, request, response);
-        this.innerError = innerError;
-    }
+export function requestError(request, response) {
+    return {
+        code: REQUEST_ERROR,
+        message: "An error occurred while sending the request",
+        request,
+        response: toErrorResponse(response)
+    };
 }
 
-export class UnsupportedContentTypeError extends HttpError {
-    constructor(request, response) {
-        const message = `\nHTTP response Content-Type is not supported:\nRequest: ${JSON.stringify(request)}\nResponse: ${JSON.stringify(response)}`;
-        super(message, request, response);
-    }
+export function networkError(request, innerError) {
+    return {
+        code: NETWORK_ERROR,
+        message: `Couldn't reach the server\nError: ${innerError.toString()}`,
+        request
+    };
 }
 
-export class UnauthorizedError extends HttpError {
-    constructor(request, response) {
-        const message = `\nUnauthorized request:\nRequest: ${JSON.stringify(request)}\nResponse: ${JSON.stringify(response)}`;
-        super(message, request, response);
-    }
+export function badRequest(request, response, responseData, responseTextAccessor) {
+    return {
+        code: BAD_REQUEST_ERROR,
+        message: "Server responded with a 400 Bad Request",
+        data: responseData,
+        request,
+        response: toErrorResponse(response, responseTextAccessor)
+    };
+}
+
+export function unsupportedContentType(request, response, contentType) {
+    return {
+        code: UNSUPPORTED_CONTENT_TYPE_ERROR,
+        message: `\nServer response Content-Type: "${contentType}" is not supported`,
+        request,
+        response: toErrorResponse(response)
+    };
+}
+
+export function unauthorized(request, response) {
+    return {
+        code: UNAUTHORIZED_ERROR,
+        message: "Server responded with a 401 Unauthorized Request",
+        request,
+        response: toErrorResponse(response)
+    };
+}
+
+export function malformedJson(request, response, innerError) {
+    return {
+        code: MALFORMED_JSON_ERROR,
+        message: `Server responsed with a malformed JSON body\nError: ${innerError.toString()}`,
+        request,
+        response: toErrorResponse(response)
+    };
 }

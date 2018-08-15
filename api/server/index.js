@@ -12,11 +12,6 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Error handling middleware.
-app.use((err, req, res, _) => {
-  res.sendStatus(500);
-});
-
 app.use(routers);
 
 const server = app.listen(PORT, function() {

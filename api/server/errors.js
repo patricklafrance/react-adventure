@@ -17,8 +17,12 @@ router.get("/409", (req, res) => {
   res.status(409).send("Conflict!");
 });
 
-router.get("/500", () => {
-  res.setStatus(500).send("BOUM, unmanaged error!");
+router.get("/500", (_, res) => {
+  res.status(500).send("BOUM, unmanaged error!");
+});
+
+router.get("/empty-body", (_, res) => {
+  res.json();
 });
 
 module.exports = router;

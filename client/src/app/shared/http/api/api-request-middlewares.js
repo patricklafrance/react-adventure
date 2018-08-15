@@ -1,9 +1,10 @@
 import { API_REQUEST, HTTP_METHODS } from "./actions";
+import { API_UNHANDLED_ERROR, apiUnauthorizedError, apiUnhandledError, apiUnmanagedError } from "@events";
+import { BAD_REQUEST_ERROR, UNAUTHORIZED_ERROR, get } from "@http";
 
-import { API_UNHANDLED_ERROR } from "@events";
 import { IS_DEBUG } from "@utils/env";
 import { InvalidOperationError } from "@utils/errors";
-import { get } from "@http";
+import _ from "lodash";
 import { isNotNullOrEmpty } from "@utils/types";
 
 const requestMiddleware = ({ dispatch }) => next => async action => {
@@ -17,19 +18,28 @@ const requestMiddleware = ({ dispatch }) => next => async action => {
                 await handleRequest(() => get({ url: toAbsoluteApiUrl(url), params }), onSuccess, onError, dispatch);
                 break;
             default:
-                throw new InvalidOperationError(`API request middleware doesn't support the HTTP method "${method}"`);
+                throw new InvalidOperationError(`Api request middleware doesn't support the HTTP method "${method}"`);
         }
     }
 
     return next(action);
 };
 
-const unhandledErrorLoggerMiddleware = ({ dispatch }) => next => action => {
+const unhandledErrorLoggerMiddleware = ({ dispatch }) => next => async action => {
     const { type, payload } = action;
 
     if (type === API_UNHANDLED_ERROR) {
         if (IS_DEBUG) {
-            console.error(payload);
+            const { code, message, request, response } = payload;
+
+            let output = `An unhandled error occurred.\nCode: ${code}\nMessage: ${message}\nRequest: ${JSON.stringify(request, 4)}`;
+
+            if (!_.isNil(response)) {
+                const responseContent = await response.content();
+                output += `\nResponse: ${JSON.stringify(response, 4)}\nContent: ${responseContent}`;
+            }
+
+            console.error(output);
         }
     }
 
@@ -37,21 +47,21 @@ const unhandledErrorLoggerMiddleware = ({ dispatch }) => next => action => {
 };
 
 async function handleRequest(request, onSuccess, onError, dispatch) {
-    try {
-        const response = await request();
-        dispatch({ type: onSuccess, payload: response.data });
-    } catch (error) {
-        // TODO: Logic should be:
-        // if is unmanaged error
-        //     dispatch unmanaged error event
-        // else if onError is not null
-        //     dispatch onError
-        // else
-        //     dispatch unhandled error event
-        if (isNotNullOrEmpty(onError)) {
-            dispatch({ type: onError, payload: error });
+    const { ok, content, error } = await request();
+
+    if (ok) {
+        dispatch({ type: onSuccess, payload: content.data });
+    } else {
+        if (error.code === BAD_REQUEST_ERROR) {
+            if (isNotNullOrEmpty(onError)) {
+                dispatch({ type: onError, payload: error.data });
+            } else {
+                dispatch(apiUnhandledError(error));
+            }
+        } else if (error.code === UNAUTHORIZED_ERROR) {
+            dispatch(apiUnauthorizedError());
         } else {
-            dispatch({ type: API_UNHANDLED_ERROR, payload: error });
+            dispatch(apiUnmanagedError(error));
         }
     }
 }
