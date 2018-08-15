@@ -141,23 +141,9 @@ function ok(content) {
     };
 }
 
-function error(error, request, response) {
-    const value = {
+function error(error) {
+    return {
         ok: false,
-        error,
-        request
+        error
     };
-
-    if (!_.isNil(response)) {
-        const { url, status, statusText } = response;
-
-        value.response = {
-            url,
-            status,
-            statusText,
-            content: () => response.text()
-        };
-    }
-
-    return value;
 }

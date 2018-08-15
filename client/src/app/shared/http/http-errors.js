@@ -12,8 +12,7 @@ function toErrorResponse(response, contentAccessor) {
         url,
         status,
         statusText,
-        // This is quite complex because a fetch response stream
-        // cannot be read twice.
+        // This is quite complex because a fetch response stream cannot be read twice.
         content: contentAccessor || (() => response.text())
     };
 }
