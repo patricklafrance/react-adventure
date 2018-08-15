@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 
-import { UsersListing } from "./listing/page.users-listing";
+import { UsersListing } from "./listing/users-listing-page";
 
 export class UsersRouter extends Component {
     render() {
