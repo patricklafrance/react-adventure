@@ -8,6 +8,7 @@ module.exports = (config, env) => {
         "@app": path.resolve(__dirname, `${paths.appSrc}/app/`),
         "@features": path.resolve(__dirname, `${paths.appSrc}/app/features/`),
         "@http": path.resolve(__dirname, `${paths.appSrc}/app/shared/http/`),
+        "@redux": path.resolve(__dirname, `${paths.appSrc}/app/shared/redux/`),
         "@utils": path.resolve(__dirname, `${paths.appSrc}/app/shared/utils/`),
         "@events": path.resolve(__dirname, `${paths.appSrc}/app/shared/events/`)
     };

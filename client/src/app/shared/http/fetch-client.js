@@ -57,6 +57,9 @@ export function post({ url, params }) {
 }
 
 async function execute(request) {
+    const ok = (content = {}) => ({ ok: true, content, error: null });
+    const error = error => ({ ok: false, content: null, error });
+
     const { url, options } = request;
 
     try {
@@ -88,7 +91,7 @@ async function execute(request) {
                     }
 
                     data = content.json;
-                    // Doesn't need to be async since the await operator will convert it to a resolved promise if need,
+                    // Doesn't need to be async since the await operator will convert it to a resolved promise if needed,
                     textAccessor = () => content.text;
                 }
 
@@ -115,40 +118,18 @@ function getContentType(response) {
 }
 
 async function getJsonContent(response) {
+    const ok = (text = "", json = {}) => ({ isMalformed: false, text, json, error: null });
+    const malformed = (text = "", error) => ({ isMalformed: true, text, json: null, error });
+
     const text = await response.text();
 
     if (isNullOrEmpty(text)) {
-        return {
-            isMalformed: false,
-            text: "",
-            json: null
-        };
+        return ok();
     }
 
     try {
-        return {
-            isMalformed: false,
-            text: text,
-            json: JSON.parse(text)
-        };
+        return ok(text, JSON.parse(text));
     } catch (error) {
-        return {
-            isMalformed: true,
-            error
-        };
+        return malformed(text, error);
     }
-}
-
-function ok(content) {
-    return {
-        ok: true,
-        content
-    };
-}
-
-function error(error) {
-    return {
-        ok: false,
-        error
-    };
 }

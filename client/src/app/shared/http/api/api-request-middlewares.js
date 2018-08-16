@@ -36,7 +36,7 @@ const unhandledErrorLoggerMiddleware = ({ dispatch }) => next => async action =>
             let output = `An unhandled error occurred.\nCode: ${code}\nMessage: ${message}\nRequest: ${JSON.stringify(request, 4)}`;
 
             if (!_.isNil(response)) {
-                const responseContent = await response.content();
+                const responseContent = await response.getContent();
                 output += `\nResponse: ${JSON.stringify(response, 4)}\nContent: ${responseContent}`;
             }
 
@@ -51,7 +51,6 @@ const unmanagedErrorMiddleware = ({ dispatch }) => next => async action => {
     const { type } = action;
 
     if (type === API_UNMANAGED_ERROR) {
-        console.log("A");
         dispatch(push("/error"));
     }
 
