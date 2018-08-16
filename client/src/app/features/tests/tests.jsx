@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { triggerBadRequest, triggerUnmanagedError } from "./actions";
+import { triggerAndHandleBadRequest, triggerBadRequest, triggerBadRequestwithEmptyResponse, triggerBadRequestwithHtmlResponse, triggerUnmanagedError } from "./actions";
 
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
@@ -11,6 +11,24 @@ export class TestsComponent extends Component {
         triggerBadRequest();
     };
 
+    triggerBadRequestwithEmptyResponse = () => {
+        const { triggerBadRequestwithEmptyResponse } = this.props.actions;
+
+        triggerBadRequestwithEmptyResponse();
+    };
+
+    triggerBadRequestwithHtmlResponse = () => {
+        const { triggerBadRequestwithHtmlResponse } = this.props.actions;
+
+        triggerBadRequestwithHtmlResponse();
+    };
+
+    triggerAndHandleBadRequest = () => {
+        const { triggerAndHandleBadRequest } = this.props.actions;
+
+        triggerAndHandleBadRequest();
+    };
+
     triggerUnmanagedError = () => {
         const { triggerUnmanagedError } = this.props.actions;
 
@@ -20,7 +38,12 @@ export class TestsComponent extends Component {
     render() {
         return (
             <div>
+                <h2>Bad Request</h2>
                 <button onClick={this.triggerBadRequest}>Trigger bad request</button>
+                <button onClick={this.triggerBadRequestwithEmptyResponse}>Trigger bad request with empty response</button>
+                <button onClick={this.triggerBadRequestwithHtmlResponse}>Trigger bad request with HTML response</button>
+                <button onClick={this.triggerAndHandleBadRequest}>Trigger and handle bad request</button>
+                <h2>Unmanaged Error</h2>
                 <button onClick={this.triggerUnmanagedError}>Trigger an unmanaged error</button>
             </div>
         );
@@ -31,6 +54,9 @@ const mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(
         {
             triggerBadRequest,
+            triggerBadRequestwithEmptyResponse,
+            triggerBadRequestwithHtmlResponse,
+            triggerAndHandleBadRequest,
             triggerUnmanagedError
         },
         dispatch

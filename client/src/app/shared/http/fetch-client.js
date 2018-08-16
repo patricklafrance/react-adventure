@@ -88,7 +88,8 @@ async function execute(request) {
                     }
 
                     data = content.json;
-                    textAccessor = async () => content.text;
+                    // Doesn't need to be async since the await operator will convert it to a resolved promise if need,
+                    textAccessor = () => content.text;
                 }
 
                 return error(badRequest(request, response, data, textAccessor));
@@ -117,7 +118,11 @@ async function getJsonContent(response) {
     const text = await response.text();
 
     if (isNullOrEmpty(text)) {
-        return null;
+        return {
+            isMalformed: false,
+            text: "",
+            json: null
+        };
     }
 
     try {

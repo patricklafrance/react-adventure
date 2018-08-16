@@ -1,11 +1,12 @@
 import { API_REQUEST, HTTP_METHODS } from "./actions";
-import { API_UNHANDLED_ERROR, apiUnauthorizedError, apiUnhandledError, apiUnmanagedError } from "@events";
+import { API_UNHANDLED_ERROR, API_UNMANAGED_ERROR, apiUnauthorizedError, apiUnhandledError, apiUnmanagedError } from "@events";
 import { BAD_REQUEST_ERROR, UNAUTHORIZED_ERROR, get } from "@http";
 
 import { IS_DEBUG } from "@utils/env";
 import { InvalidOperationError } from "@utils/errors";
 import _ from "lodash";
 import { isNotNullOrEmpty } from "@utils/types";
+import { push } from "connected-react-router";
 
 const requestMiddleware = ({ dispatch }) => next => async action => {
     const { type, payload } = action;
@@ -46,6 +47,17 @@ const unhandledErrorLoggerMiddleware = ({ dispatch }) => next => async action =>
     return next(action);
 };
 
+const unmanagedErrorMiddleware = ({ dispatch }) => next => async action => {
+    const { type } = action;
+
+    if (type === API_UNMANAGED_ERROR) {
+        console.log("A");
+        dispatch(push("/error"));
+    }
+
+    return next(action);
+};
+
 async function handleRequest(request, onSuccess, onError, dispatch) {
     const { ok, content, error } = await request();
 
@@ -70,4 +82,4 @@ function toAbsoluteApiUrl(relativeUrl) {
     return `http://localhost:5000${relativeUrl}`;
 }
 
-export const apiRequestMiddlewares = [requestMiddleware, unhandledErrorLoggerMiddleware];
+export const apiRequestMiddlewares = [requestMiddleware, unhandledErrorLoggerMiddleware, unmanagedErrorMiddleware];
