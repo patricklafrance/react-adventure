@@ -1,7 +1,6 @@
-import { SET_PRODUCTS } from "./actions";
-import { createReducer } from "@utils/redux";
+import { PRODUCT_UPVOTED, SET_PRODUCTS } from "./actions";
 
-// import { combineReducers } from "redux";
+import { createReducer } from "@redux";
 
 // TODO: Pas certains que ça fonctionne ça avec plusieurs fichiers de reducers?
 const INITIAL_STATE = {
@@ -17,28 +16,23 @@ const INITIAL_STATE = {
 function setProducts(state, payload) {
     return {
         ...state,
-        products: payload
+        products: [...payload.data]
+    };
+}
+
+// TODO: Extract utility in immutability.js
+function productUpvoted(state, payload) {
+    return {
+        ...state,
+        products: state.products.map(x => (x.id === payload.productId ? { ...x, voteCount: x.voteCount + 1 } : x))
     };
 }
 
 const reducers = {
-    [SET_PRODUCTS]: setProducts
+    [SET_PRODUCTS]: setProducts,
+    [PRODUCT_UPVOTED]: productUpvoted
 };
 
-export const listingReducers = {
+export const listingReducer = {
     listing: createReducer(INITIAL_STATE, reducers, "products.listing.reducer")
 };
-
-// function reducer(state = INITIAL_STATE, { type, payload }) {
-//     switch (type) {
-//         case SET_PRODUCTS:
-//             return setProducts(state, payload);
-//         default:
-//             return state;
-//     }
-// }
-
-// // TODO: Might need to combineReducers here.
-// export const listingReducer = combineReducers({
-//     listing: reducer
-// });

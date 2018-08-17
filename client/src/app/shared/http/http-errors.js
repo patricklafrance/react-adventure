@@ -44,12 +44,12 @@ export function badRequest(request, response, responseData, responseTextAccessor
     };
 }
 
-export function unsupportedContentType(request, response, contentType) {
+export function unsupportedContentType(request, response, contentType, responseTextAccessor) {
     return {
         code: UNSUPPORTED_CONTENT_TYPE_ERROR,
-        message: `\nServer response Content-Type: "${contentType}" is not supported`,
+        message: `Server response Content-Type: "${contentType}" is not supported`,
         request,
-        response: toErrorResponse(response)
+        response: toErrorResponse(response, responseTextAccessor)
     };
 }
 
@@ -62,11 +62,11 @@ export function unauthorized(request, response) {
     };
 }
 
-export function malformedJson(request, response, innerError) {
+export function malformedJson(request, response, innerError, responseTextAccessor) {
     return {
         code: MALFORMED_JSON_ERROR,
         message: `Server responsed with a malformed JSON body\nError: ${innerError.toString()}`,
         request,
-        response: toErrorResponse(response)
+        response: toErrorResponse(response, responseTextAccessor)
     };
 }

@@ -1,15 +1,17 @@
 import React, { PureComponent } from "react";
+import { getProducts, upvoteProduct } from "./actions";
 
-import { bindActionCreators } from "redux";
+import { Product } from "./product";
 import { connect } from "react-redux";
-import { getProducts } from "./actions";
 
 export class ProductsListingComponent extends PureComponent {
     componentWillMount() {
-        const { getProducts } = this.props.actions;
-
-        getProducts();
+        this.props.dispatch(getProducts());
     }
+
+    upvoteProduct = product => {
+        this.props.dispatch(upvoteProduct(product.id));
+    };
 
     render() {
         const { products } = this.props;
@@ -20,7 +22,7 @@ export class ProductsListingComponent extends PureComponent {
             ) : (
                 <ul>
                     {products.map((product, i) => (
-                        <li key={i}>{product.name}</li>
+                        <Product key={i} product={product} onUpvote={this.upvoteProduct} />
                     ))}
                 </ul>
             );
@@ -28,7 +30,6 @@ export class ProductsListingComponent extends PureComponent {
         return (
             <React.Fragment>
                 <h1>Product listing</h1>
-
                 {productList}
             </React.Fragment>
         );
@@ -38,22 +39,10 @@ export class ProductsListingComponent extends PureComponent {
 const mapStateToProps = (state, props) => {
     const { products } = state.products.listing;
 
-    return {
-        ...props,
-        products
-    };
+    return { ...props, products };
 };
-
-const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators(
-        {
-            getProducts
-        },
-        dispatch
-    )
-});
 
 export const ProductsListing = connect(
     mapStateToProps,
-    mapDispatchToProps
+    null
 )(ProductsListingComponent);

@@ -1,4 +1,4 @@
-import { apiRequestMiddlewares } from "@http/api";
+import { apiMiddlewares } from "@http/api";
 import { handlers } from "./handlers";
 
-export const middlewares = [...handlers, ...apiRequestMiddlewares];
+export const middlewares = [...handlers, ...apiMiddlewares];
