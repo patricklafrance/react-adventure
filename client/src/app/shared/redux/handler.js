@@ -1,10 +1,13 @@
 import { ensure } from "@utils/contracts";
 
-export function handler(fct) {
-    ensure(fct, "fct", "redux.handler").isNotNull();
+export function handler(handle) {
+    ensure(handle, "handle", "redux.handler").isNotNull();
 
     return ({ dispatch, getState }) => next => action => {
-        next(action);
-        fct({ dispatch, getState, action });
+        const result = next(action);
+
+        handle(dispatch, action, getState);
+
+        return result;
     };
 }

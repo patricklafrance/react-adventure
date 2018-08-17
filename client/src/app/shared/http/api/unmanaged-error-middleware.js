@@ -1,14 +1,11 @@
 import { API_UNMANAGED_ERROR, apiUnhandledError } from "@events";
 
+import { middleware } from "@redux";
 import { push } from "connected-react-router";
 
-export const unmanagedErrorMiddleware = ({ dispatch }) => next => async action => {
-    const { type, payload } = action;
-
+export const unmanagedErrorMiddleware = middleware(({ dispatch }, { type, payload }) => {
     if (type === API_UNMANAGED_ERROR) {
         dispatch(apiUnhandledError(payload));
         dispatch(push("/error"));
     }
-
-    return next(action);
-};
+});

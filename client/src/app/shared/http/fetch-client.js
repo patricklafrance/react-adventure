@@ -83,9 +83,8 @@ async function execute(request) {
         return withoutContent({ request, response, textAccessor });
     };
 
-    const { url, options } = request;
-
     try {
+        const { url, options } = request;
         const response = await fetch(url, options);
 
         if (response.ok) {
