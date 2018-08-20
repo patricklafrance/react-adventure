@@ -1,4 +1,4 @@
 import { apiMiddlewares } from "@http/api";
 import { handlers } from "./handlers";
 
-export const middlewares = [...handlers, ...apiMiddlewares];
+export const middlewares = [...apiMiddlewares, ...handlers];

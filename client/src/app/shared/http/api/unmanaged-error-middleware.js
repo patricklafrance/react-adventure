@@ -1,4 +1,4 @@
-import { API_UNMANAGED_ERROR, apiUnhandledError } from "@events";
+import { API_UNMANAGED_ERROR, apiUnhandledError } from "@events/http";
 
 import { middleware } from "@redux";
 import { push } from "connected-react-router";

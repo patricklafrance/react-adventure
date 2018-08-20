@@ -1,12 +1,12 @@
 import { ensure } from "@utils/contracts";
 
-export function asyncMiddleware(middleware) {
-    ensure(middleware, "middleware", "redux.asyncMiddleware").isNotNull();
+export function asyncMiddleware(handler) {
+    ensure(handler, "handler", "redux.asyncMiddleware").isNotNull();
 
     return store => next => action => {
         const result = next(action);
 
-        middleware(store, action);
+        handler(store, action);
 
         return result;
     };

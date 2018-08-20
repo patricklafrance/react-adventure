@@ -1,21 +1,21 @@
 import { API_REQUEST, HTTP_METHODS } from "./actions";
 import { BAD_REQUEST_ERROR, UNAUTHORIZED_ERROR, get, post } from "@http";
-import { apiUnauthorizedError, apiUnhandledError, apiUnmanagedError } from "@events";
+import { apiUnauthorizedError, apiUnhandledError, apiUnmanagedError } from "@events/http";
 
 import { InvalidOperationError } from "@utils/errors";
 import _ from "lodash";
 import { asyncMiddleware } from "@redux";
 
-export const requestMiddleware = asyncMiddleware(async ({ dispatch }, { type, payload }) => {
+export const requestMiddleware = asyncMiddleware(async ({ dispatch }, { type, payload, meta }) => {
     if (type === API_REQUEST) {
-        const { method, url, params, onSuccess, onError } = payload;
+        const { method, url, onSuccess, onError } = meta;
 
         switch (method) {
             case HTTP_METHODS.get:
-                await handleRequest(() => get({ url: toAbsoluteApiUrl(url), params }), onSuccess, onError, dispatch);
+                await handleRequest(() => get({ url: toAbsoluteApiUrl(url), params: payload }), onSuccess, onError, dispatch);
                 break;
             case HTTP_METHODS.post:
-                await handleRequest(() => post({ url: toAbsoluteApiUrl(url), params }), onSuccess, onError, dispatch);
+                await handleRequest(() => post({ url: toAbsoluteApiUrl(url), params: payload }), onSuccess, onError, dispatch);
                 break;
             default:
                 throw new InvalidOperationError(`http.api.request-middleware - The HTTP method "${method}" is not supported`);
@@ -66,5 +66,5 @@ function resolveRequestCallback(callback, { content }) {
 }
 
 function toAbsoluteApiUrl(relativeUrl) {
-    return `http://localhost:5000${relativeUrl}`;
+    return `http://localhost:5000/api${relativeUrl}`;
 }

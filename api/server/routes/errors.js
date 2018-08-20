@@ -8,11 +8,11 @@ router.get("/400", (req, res) => {
   });
 });
 
-router.get("/400-empty", (req, res) => {
+router.get("/400/empty", (req, res) => {
   res.status(400).json();
 });
 
-router.get("/400-html", (req, res) => {
+router.get("/400/html", (req, res) => {
   res
     .status(400)
     .type("text/html")

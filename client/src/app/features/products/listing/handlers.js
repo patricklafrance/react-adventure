@@ -1,4 +1,4 @@
-import { GET_PRODUCTS, SET_PRODUCTS, UPVOTE_PRODUCT, productUpvoted } from "./actions";
+import { GET_PRODUCT, GET_PRODUCTS, PRODUCT_UPVOTED, SET_PRODUCT, SET_PRODUCTS, UPVOTE_PRODUCT, getProduct, productUpvoted } from "./actions";
 import { get, post } from "@http/api";
 
 const getProductsHandler = (dispatch, { type }) => {
@@ -13,4 +13,16 @@ const upvoteProductHandler = (dispatch, { type, payload }) => {
     }
 };
 
-export const listingHandlers = [getProductsHandler, upvoteProductHandler];
+const productUpvotedHandler = (dispatch, { type, payload }) => {
+    if (type === PRODUCT_UPVOTED) {
+        dispatch(getProduct(payload.productId));
+    }
+};
+
+const getProductHandler = (dispatch, { type, payload }) => {
+    if (type === GET_PRODUCT) {
+        dispatch(get({ url: `/products/${payload.productId}`, params: null, onSuccess: SET_PRODUCT }));
+    }
+};
+
+export const listingHandlers = [getProductsHandler, upvoteProductHandler, productUpvotedHandler, getProductHandler];

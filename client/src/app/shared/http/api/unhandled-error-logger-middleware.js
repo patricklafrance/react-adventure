@@ -1,4 +1,4 @@
-import { API_UNHANDLED_ERROR } from "@events";
+import { API_UNHANDLED_ERROR } from "@events/http";
 import { IS_DEBUG } from "@utils/env";
 import _ from "lodash";
 import { asyncMiddleware } from "@redux";

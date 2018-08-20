@@ -10,13 +10,13 @@ const triggerBadRequestHandler = (dispatch, { type }) => {
 
 const triggerBadRequestWithEmptyResponseHandler = (dispatch, { type }) => {
     if (type === TRIGGER_BAD_REQUEST_WITH_EMPTY_RESPONSE) {
-        dispatch(get({ url: "/400-empty", onSuccess: "WILL NOT HAPPEN" }));
+        dispatch(get({ url: "/400/empty", onSuccess: "WILL NOT HAPPEN" }));
     }
 };
 
 const triggerBadRequestWithHtmlResponseHandler = (dispatch, { type }) => {
     if (type === TRIGGER_BAD_REQUEST_WITH_HTML_RESPONSE) {
-        dispatch(get({ url: "/400-html", onSuccess: "WILL NOT HAPPEN" }));
+        dispatch(get({ url: "/400/html", onSuccess: "WILL NOT HAPPEN" }));
     }
 };
 
@@ -38,4 +38,4 @@ const triggerUnmanagedErrorHandler = (dispatch, { type }) => {
     }
 };
 
-export const testsHandlers = [triggerBadRequestHandler, triggerBadRequestWithEmptyResponseHandler, triggerUnmanagedErrorHandler, triggerBadRequestWithHtmlResponseHandler, triggerAndHandleBadRequest, handleBadRequest];
+export const playgroundHandlers = [triggerBadRequestHandler, triggerBadRequestWithEmptyResponseHandler, triggerUnmanagedErrorHandler, triggerBadRequestWithHtmlResponseHandler, triggerAndHandleBadRequest, handleBadRequest];

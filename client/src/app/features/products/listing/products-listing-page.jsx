@@ -1,6 +1,7 @@
 import React, { PureComponent } from "react";
 import { getProducts, upvoteProduct } from "./actions";
 
+import { NavLink } from "react-router-dom";
 import { Product } from "./product";
 import { connect } from "react-redux";
 
@@ -30,6 +31,9 @@ export class ProductsListingComponent extends PureComponent {
         return (
             <React.Fragment>
                 <h1>Product listing</h1>
+                <div>
+                    <NavLink to="/products/add">Add a new product</NavLink>
+                </div>
                 {productList}
             </React.Fragment>
         );

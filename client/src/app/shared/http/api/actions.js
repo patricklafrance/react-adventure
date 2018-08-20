@@ -10,13 +10,12 @@ export const HTTP_METHODS = {
 };
 
 function request(method, url, params, onSuccess, onError) {
-    // TODO: set method, url, onSuccess and onError as meta
     return {
         type: API_REQUEST,
-        payload: {
+        payload: params,
+        meta: {
             method,
             url,
-            params,
             onSuccess,
             onError
         }

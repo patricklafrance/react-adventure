@@ -13,8 +13,6 @@ const ASSERTION_DEFINITIONS = {
             const message = getMessage(assertionMessage, template`${0}${1} cannot be null.`, parameterName, context);
             throw new ArgumentNullError(parameterName, message);
         }
-
-        return this;
     },
 
     // usage:
@@ -35,8 +33,6 @@ const ASSERTION_DEFINITIONS = {
             const message = getMessage(assertionMessage, template`${0}${1} cannot be empty.`, parameterName, context);
             throw new ArgumentError(message);
         }
-
-        return this;
     },
 
     // usage:
@@ -54,8 +50,6 @@ const ASSERTION_DEFINITIONS = {
             message = getMessage(assertionMessage, template`${0}${1} cannot be empty.`, parameterName, context);
             throw new ArgumentError(message);
         }
-
-        return this;
     },
 
     // usage:
@@ -66,8 +60,6 @@ const ASSERTION_DEFINITIONS = {
             const message = getMessage(assertionMessage, template`${0}${1} must be a function.`, parameterName, context);
             throw new ArgumentError(message);
         }
-
-        return this;
     },
 
     // usage:
@@ -78,8 +70,6 @@ const ASSERTION_DEFINITIONS = {
             const message = getMessage(assertionMessage, template`${0}${1} must be a string.`, parameterName, context);
             throw new ArgumentError(message);
         }
-
-        return this;
     },
 
     // usage:
@@ -90,8 +80,6 @@ const ASSERTION_DEFINITIONS = {
             const message = getMessage(assertionMessage, template`${0}${1} must be an array.`, parameterName, context);
             throw new ArgumentError(message);
         }
-
-        return this;
     },
 
     // usage:
@@ -102,8 +90,6 @@ const ASSERTION_DEFINITIONS = {
             const message = getMessage(assertionMessage, template`${0}${1} must be an object.`, parameterName, context);
             throw new ArgumentError(message);
         }
-
-        return this;
     },
 
     // usage:
@@ -114,8 +100,6 @@ const ASSERTION_DEFINITIONS = {
             const message = getMessage(assertionMessage, template`${0}${1} must be a number.`, parameterName, context);
             throw new ArgumentError(message);
         }
-
-        return this;
     },
 
     // usage:
@@ -134,8 +118,6 @@ const ASSERTION_DEFINITIONS = {
             const message = getMessage(assertionMessage, template`${0}${1} is invalid.`, parameterName, context);
             throw new ArgumentError(message);
         }
-
-        return this;
     }
 };
 
@@ -173,11 +155,15 @@ function getMessage(assertionMessage, defaultMessageTemplate, parameterName, con
 export function ensure(parameter, parameterName, context) {
     const assertions = {};
 
-    const getAssertionProxy = property => {
+    const getAssertionProxy = assertion => {
         return (...args) => {
-            args.unshift(parameter, parameterName, context);
+            // args.unshift(parameter, parameterName, context);
 
-            return Reflect.apply(property, assertions, args);
+            // Reflect.apply(property, assertions, args);
+
+            assertion(parameter, parameterName, context, ...args);
+
+            return assertions;
         };
     };
 

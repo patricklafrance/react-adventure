@@ -4,7 +4,7 @@ import { triggerAndHandleBadRequest, triggerBadRequest, triggerBadRequestwithEmp
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 
-export class TestsComponent extends Component {
+export class ErrorsPlaygroundComponent extends Component {
     triggerBadRequest = () => {
         const { triggerBadRequest } = this.props.actions;
 
@@ -63,7 +63,7 @@ const mapDispatchToProps = dispatch => ({
     )
 });
 
-export const Tests = connect(
+export const ErrorsPlayground = connect(
     null,
     mapDispatchToProps
-)(TestsComponent);
+)(ErrorsPlaygroundComponent);

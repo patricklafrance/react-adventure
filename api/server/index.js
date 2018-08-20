@@ -1,18 +1,19 @@
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
-
-const routers = [require("./products"), require("./errors")];
 
 const PORT = 5000;
 
 const app = express();
 
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.json());
 
-app.use(routers);
+app.use("/api", require("./routes"));
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send(err.stack);
+});
 
 const server = app.listen(PORT, function() {
   const host = server.address().address;

@@ -1,4 +1,4 @@
-const NAMESPACE = "[test]";
+const NAMESPACE = "[playground]";
 
 export const TRIGGER_BAD_REQUEST = `${NAMESPACE} Trigger Bad Request`;
 export const TRIGGER_BAD_REQUEST_WITH_EMPTY_RESPONSE = `${NAMESPACE} Trigger Bad Request With Empty Response`;

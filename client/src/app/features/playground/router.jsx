@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 
-import { Tests } from "./tests";
+import { ErrorsPlayground } from "./errors-playground";
 
-export class TestsRouter extends Component {
+export class PlaygroundRouter extends Component {
     render() {
         const { match } = this.props;
 
         return (
             <Switch>
-                <Route path={match.path} component={Tests} exact />
+                <Route path={match.path} component={ErrorsPlayground} exact />
             </Switch>
         );
     }

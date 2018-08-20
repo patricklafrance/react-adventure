@@ -1,4 +1,5 @@
+import { layoutHandlers } from "./layout";
+import { playgroundHandlers } from "./playground";
 import { productsHandlers } from "./products";
-import { testsHandlers } from "./tests";
 
-export const featuresHandlers = [...productsHandlers, ...testsHandlers];
+export const featuresHandlers = [...productsHandlers, ...playgroundHandlers, ...layoutHandlers];

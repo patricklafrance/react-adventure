@@ -1,9 +1,9 @@
-import { ensure } from "@utils/contracts";
-
 const NAMESPACE = "[products.listing]";
 
 export const GET_PRODUCTS = `${NAMESPACE} Get Products`;
 export const SET_PRODUCTS = `${NAMESPACE} Set Products`;
+export const GET_PRODUCT = `${NAMESPACE} Get Product`;
+export const SET_PRODUCT = `${NAMESPACE} Set Product`;
 export const UPVOTE_PRODUCT = `${NAMESPACE} Upvote Products`;
 export const PRODUCT_UPVOTED = `${NAMESPACE} Product Upvoted`;
 
@@ -14,20 +14,16 @@ export function getProducts() {
     };
 }
 
-export function setProducts(products) {
-    ensure(products, "products", "product.listing.setProducts").isNotNull();
-
+export function getProduct(productId) {
     return {
-        type: SET_PRODUCTS,
+        type: GET_PRODUCT,
         payload: {
-            products: products
+            productId: productId
         }
     };
 }
 
 export function upvoteProduct(productId) {
-    ensure(productId, "productId", "product.listing.upvoteProduct").isNotNull();
-
     return {
         type: UPVOTE_PRODUCT,
         payload: {
@@ -37,8 +33,6 @@ export function upvoteProduct(productId) {
 }
 
 export function productUpvoted(productId) {
-    ensure(productId, "productId", "product.listing.productUpvoted").isNotNull();
-
     return {
         type: PRODUCT_UPVOTED,
         payload: {

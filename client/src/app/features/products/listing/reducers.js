@@ -1,4 +1,4 @@
-import { PRODUCT_UPVOTED, SET_PRODUCTS } from "./actions";
+import { SET_PRODUCT, SET_PRODUCTS } from "./actions";
 
 import { createReducer } from "@redux";
 
@@ -6,23 +6,23 @@ const INITIAL_STATE = {
     products: []
 };
 
-function setProducts(state, payload) {
+function setProducts(state, { products }) {
     return {
         ...state,
-        products: [...payload.data]
+        products: [...products]
     };
 }
 
-function productUpvoted(state, payload) {
+function setProduct(state, product) {
     return {
         ...state,
-        products: state.products.map(x => (x.id === payload.productId ? { ...x, voteCount: x.voteCount + 1 } : x))
+        products: state.products.map(x => (x.id === product.id ? product : x))
     };
 }
 
 const reducers = {
     [SET_PRODUCTS]: setProducts,
-    [PRODUCT_UPVOTED]: productUpvoted
+    [SET_PRODUCT]: setProduct
 };
 
 export const listingReducer = {

@@ -9,12 +9,13 @@ export class Product extends PureComponent {
 
     render() {
         const { product } = this.props;
-        const { name, voteCount } = product;
+        const { name, brand, voteCount } = product;
 
         return (
             <li>
                 Name: {name}
-                &nbsp;&nbsp;Vote: {voteCount}
+                &nbsp;&nbsp; Brand: {brand}
+                &nbsp;&nbsp; Vote: {voteCount}
                 &nbsp;&nbsp;
                 <button onClick={this.upvote}>upvote</button>
             </li>
