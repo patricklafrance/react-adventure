@@ -4,18 +4,18 @@ import { apiUnauthorizedError, apiUnhandledError, apiUnmanagedError } from "@eve
 
 import { InvalidOperationError } from "@utils/errors";
 import _ from "lodash";
-import { asyncMiddleware } from "@redux";
+import { middleware } from "@redux";
 
-export const requestMiddleware = asyncMiddleware(async ({ dispatch }, { type, payload, meta }) => {
+export const requestMiddleware = middleware(async ({ dispatch }, { type, payload, meta }) => {
     if (type === API_REQUEST) {
-        const { method, url, onSuccess, onError } = meta;
+        const { method, url, success, error } = meta.api;
 
         switch (method) {
             case HTTP_METHODS.get:
-                await handleRequest(() => get({ url: toAbsoluteApiUrl(url), params: payload }), onSuccess, onError, dispatch);
+                await handleRequest(() => get({ url: toAbsoluteApiUrl(url), data: payload }), success, error, dispatch);
                 break;
             case HTTP_METHODS.post:
-                await handleRequest(() => post({ url: toAbsoluteApiUrl(url), params: payload }), onSuccess, onError, dispatch);
+                await handleRequest(() => post({ url: toAbsoluteApiUrl(url), data: payload }), success, error, dispatch);
                 break;
             default:
                 throw new InvalidOperationError(`http.api.request-middleware - The HTTP method "${method}" is not supported`);

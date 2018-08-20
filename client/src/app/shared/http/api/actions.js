@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { ensure } from "@utils/contracts";
 
 const NAMESPACE = "[http.api]";
@@ -9,31 +10,30 @@ export const HTTP_METHODS = {
     post: "POST"
 };
 
-function request(method, url, params, onSuccess, onError) {
-    return {
-        type: API_REQUEST,
-        payload: params,
-        meta: {
-            method,
-            url,
-            onSuccess,
-            onError
-        }
-    };
-}
-
-// TODO: ensure onSuccess is string, object or function
-export function get({ url, params, onSuccess, onError }) {
+export function get(action, { url, success, error }) {
+    ensure(action, "action", "api.actions.get").isNotNull();
     ensure(url, "url", "api.actions.get").isNotNullOrEmpty();
-    ensure(onSuccess, "onSuccess", "api.actions.get").isNotNull();
+    ensure(success, "success", "api.actions.get").isTrue(x => _.isString(x) || _.isFunction(x) || _.isPlainObject(x));
 
-    return request(HTTP_METHODS.get, url, params, onSuccess, onError);
+    return withApiMetadata(action, HTTP_METHODS.get, url, success, error);
 }
 
-// TODO: ensure onSuccess is string, object or function
-export function post({ url, params, onSuccess, onError }) {
+export function post(action, { url, success, error }) {
     ensure(url, "url", "api.actions.post").isNotNullOrEmpty();
-    ensure(onSuccess, "onSuccess", "api.actions.post").isNotNull();
+    ensure(success, "success", "api.actions.post").isTrue(x => _.isString(x) || _.isFunction(x) || _.isPlainObject(x));
 
-    return request(HTTP_METHODS.post, url, params, onSuccess, onError);
+    return withApiMetadata(action, HTTP_METHODS.post, url, success, error);
+}
+
+function withApiMetadata(action, method, url, success, error) {
+    return Object.assign({}, action, {
+        meta: {
+            api: {
+                method,
+                url,
+                success,
+                error
+            }
+        }
+    });
 }

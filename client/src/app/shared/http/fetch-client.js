@@ -6,7 +6,7 @@ import { isNotNullOrEmpty } from "@utils/types";
 
 // TODO: Use the new URLSearchParams
 // TODO: Might not need if we choose to use routes like /products/:productId
-function convertParamsToUrlParameters(params) {
+function convertDataToUrlParameters(params) {
     return Object.keys(params)
         .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
         .join("&");
@@ -24,13 +24,17 @@ function createRequestOptions({ method, body }) {
     };
 }
 
-export function get({ url, params }) {
+export function get({ url, data }) {
     ensure(url, "url", "http.fetch-client.get").isNotNullOrEmpty();
 
     let requestUrl = url;
 
-    if (!_.isNil(params)) {
-        requestUrl = `${requestUrl}?${convertParamsToUrlParameters(params)}`;
+    if (!_.isNil(data)) {
+        const urlParameters = convertDataToUrlParameters(data);
+
+        if (isNotNullOrEmpty(urlParameters)) {
+            requestUrl = `${requestUrl}?${urlParameters}`;
+        }
     }
 
     const options = createRequestOptions({
@@ -43,12 +47,12 @@ export function get({ url, params }) {
     });
 }
 
-export function post({ url, params }) {
+export function post({ url, data }) {
     ensure(url, "url", "http.fetch-client.post").isNotNullOrEmpty();
 
     const options = createRequestOptions({
         method: "POST",
-        body: JSON.stringify(params)
+        body: JSON.stringify(data)
     });
 
     return execute({

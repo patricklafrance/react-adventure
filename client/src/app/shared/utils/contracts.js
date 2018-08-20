@@ -103,8 +103,8 @@ const ASSERTION_DEFINITIONS = {
     },
 
     // usage:
-    //      ensure(parameter, "Optional parameter name", "Optional context", () => { return true; // Optional evaluator function that returns a bool })
-    //          .isTrue("Optional specific message");
+    //      ensure(parameter, "Optional parameter name", "Optional context")
+    //          .isTrue(/* Can be a boolean or a function */ () => { return true; }, "Optional specific message");
     isTrue: (parameter, parameterName, context, evaluator, assertionMessage) => {
         let fct = evaluator;
 

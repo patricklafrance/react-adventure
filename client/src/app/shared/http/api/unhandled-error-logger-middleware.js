@@ -1,9 +1,9 @@
 import { API_UNHANDLED_ERROR } from "@events/http";
 import { IS_DEBUG } from "@utils/env";
 import _ from "lodash";
-import { asyncMiddleware } from "@redux";
+import { middleware } from "@redux";
 
-export const unhandledErrorLoggerMiddleware = asyncMiddleware(async (dispatch, { type, payload }) => {
+export const unhandledErrorLoggerMiddleware = middleware(async (dispatch, { type, payload }) => {
     if (type === API_UNHANDLED_ERROR) {
         if (IS_DEBUG) {
             const { code, message, request, response } = payload;

@@ -13,7 +13,7 @@ export class AddProductComponent extends PureComponent {
         return (
             <React.Fragment>
                 <h1>Add a new product</h1>
-                <CreateProductForm onSubmit2={this.createProduct} />
+                <CreateProductForm onCreate={this.createProduct} />
             </React.Fragment>
         );
     }
